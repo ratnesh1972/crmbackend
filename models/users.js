@@ -25,6 +25,9 @@ const usersSchema = new Schema({
     role: {
         type: String,
         required: true
+    },
+    reg_date: {
+        type: Date
     }
 })
 

@@ -5,7 +5,22 @@ const { validationResult, check } = require('express-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const secret = process.env.JWTSECRET;
+const authenticate = require('../middleware/authenticate');
 
+//Getting user data for logged in user.
+routes.get('/', authenticate, async (req, res) => {
+    try {
+        const id = req.user.id;
+        const user = await User.findById(id);
+        const { _id, username, firstname, lastname, type, role } = user;
+        res.json({ _id, username, firstname, lastname, type, role });
+    } catch (error) {
+        res.status(500).send('Server Error');
+    }
+});
+
+
+//Getting user logged in. Return JWT Token if credentials are correct.
 routes.post('/', [
     check('username').isEmail().withMessage('Please enter valid email'),
     check('password').notEmpty().withMessage('Please enter valid password'),
@@ -33,19 +48,16 @@ routes.post('/', [
                 }
                 const token = jwt.sign(payload, secret, { expiresIn: 60 * 60 });
                 res.json(token);
-
             } else {
-                return res.status(400).send('Incorrect Password!');
+                return res.status(400).json({ message: 'Incorrect Password!' });
             }
-
         } else {
-            return res.status(400).send('Incorrect Credentials!');
+            return res.status(400).json({ message: 'Incorrect Credentials!' });
         }
 
     } catch (error) {
-        res.status(500).send('Server Error');
+        res.status(500).json({ message: 'Something went wrong..' });
     }
 });
-
 
 module.exports = routes;

@@ -17,6 +17,9 @@ const leadsSchema = new Schema({
     status: {
         type: String,
         required: true
+    },
+    reg_date: {
+        type: Date
     }
 })
 

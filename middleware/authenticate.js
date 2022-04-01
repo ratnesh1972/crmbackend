@@ -4,7 +4,7 @@ const User = require('../models/users');
 
 
 const authenticate = async (req, res, next) => {
-    const token = req.header('x-auth-token');
+    const token = req.header('X-Auth-Token');
 
     try {
         if (!token) {

@@ -13,6 +13,9 @@ const contactsSchema = new Schema({
     phone: {
         type: String,
         required: true
+    },
+    reg_date: {
+        type: Date
     }
 })
 
