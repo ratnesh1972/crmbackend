@@ -3,10 +3,10 @@ const writeauthorization = async (req, res, next) => {
         if (req.user.role === 'write') {
             next();
         } else {
-            return res.status(401).send('Unauthorized!');
+            return res.status(401).json({ message: 'You are unauthorized!' });
         }
     } catch (error) {
-        res.status(500).send('Server Error');
+        res.status(500).json({ message: 'Something went wrong...' });
     }
 }
 

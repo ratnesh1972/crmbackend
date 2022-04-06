@@ -15,7 +15,7 @@ routes.get('/', authenticate, async (req, res) => {
         const { _id, username, firstname, lastname, type, role } = user;
         res.json({ _id, username, firstname, lastname, type, role });
     } catch (error) {
-        res.status(500).send('Server Error');
+        res.status(500).json({ message: 'Something went wrong...!' });
     }
 });
 

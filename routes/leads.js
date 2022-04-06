@@ -1,5 +1,6 @@
 const express = require('express');
 const Lead = require('../models/leads');
+const User = require('../models/users');
 const routes = express.Router();
 const { validationResult, check } = require('express-validator');
 const authenticate = require('../middleware/authenticate');
@@ -9,10 +10,10 @@ const writeauthorization = require('../middleware/writeauthorization');
 
 routes.get('/', authenticate, readauthorization, async (req, res) => {
     try {
-        const leads = await Lead.find({});
+        const leads = await Lead.find({}).populate('created_by', 'firstname');
         res.json(leads);
     } catch (error) {
-        res.status(500).send('Server Error');
+        res.status(500).json({ message: 'Something went wrong...' });
     }
 });
 
@@ -29,16 +30,12 @@ routes.post('/', [
     }
 
     try {
-        const { name, company, phone, status } = req.body;
-
-        const lead = await new Lead({ name, company, phone, status });
-
+        const { name, company, phone, status, created_by } = req.body;
+        const lead = await new Lead({ name, company, phone, status, created_by });
         await lead.save();
-
         return res.json(lead);
-
     } catch (error) {
-        res.status(500).send('Server Error');
+        json({ message: 'Something went wrong...' });
     }
 });
 
@@ -68,7 +65,7 @@ routes.put('/:id', [
         res.json(newlead);
 
     } catch (error) {
-        res.status(500).send('Server Error');
+        json({ message: 'Something went wrong...' });
     }
 });
 
@@ -81,7 +78,7 @@ routes.delete('/:id', async (req, res) => {
         res.json('Lead deleted successfully!');
 
     } catch (error) {
-        res.status(500).send('Server Error');
+        json({ message: 'Something went wrong...' });
     }
 });
 

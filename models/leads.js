@@ -18,6 +18,15 @@ const leadsSchema = new Schema({
         type: String,
         required: true
     },
+    created_by: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    last_updated_by: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     reg_date: {
         type: Date
     }
