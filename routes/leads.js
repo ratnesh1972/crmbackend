@@ -59,24 +59,18 @@ routes.put('/:id', [
         if (!lead) {
             return res.status(404).json({ error: 'Lead not found!' });
         }
-
         const newlead = await Lead.findByIdAndUpdate(id, { $set: { name, company, phone, status } }, { new: true });
-
         res.json(newlead);
-
     } catch (error) {
         json({ message: 'Something went wrong...' });
     }
 });
 
 routes.delete('/:id', async (req, res) => {
-
     try {
-
         const id = req.params.id;
         await Lead.findByIdAndDelete(id);
-        res.json('Lead deleted successfully!');
-
+        res.json({ success: true });
     } catch (error) {
         json({ message: 'Something went wrong...' });
     }
